@@ -1,15 +1,16 @@
-export function meta() {
-    return [
-        { title: "Create an account" },
-    ];
-}
+import React from "react";
+import RegisterForm from "@/components/RegisterForm";
+import "./Register.css";
 
 export default function Register() {
-    return (
-        <main className="flex items-center justify-center pt-16 pb-4">
-            <div className="flex-1 flex flex-col items-center min-h-0">
-                <h1 className="text-4xl font-bold">Register</h1>
-            </div>
-        </main>
-    );
+  function handleRegister(email, password, name) {
+    
+    alert(`Registered: ${email}`);
+  }
+
+  return (
+    <div className="register-container">
+      <RegisterForm onRegister={handleRegister} />
+    </div>
+  );
 }
