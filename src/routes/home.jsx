@@ -1,9 +1,3 @@
-export function meta() {
-    return [
-        { title: "Tourney" },
-    ];
-}
-
 export default function Home() {
     return (
         <main className="flex items-center justify-center pt-16 pb-4">

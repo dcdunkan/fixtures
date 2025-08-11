@@ -5,6 +5,7 @@ import "./login.css";
 export default function Login() {
     function handleLogin(email, password) {
         alert(`Logging in: ${email}`);
+        navigate;
     }
 
     return (
