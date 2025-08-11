@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "./LoginForm.css";
+import { Link } from "react-router";
 
 export default function LoginForm({ onLogin }) {
     const [email, setEmail] = useState("");

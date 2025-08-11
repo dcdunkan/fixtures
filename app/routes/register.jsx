@@ -1,6 +1,6 @@
 import RegisterForm from "@/components/RegisterForm";
 import React from "react";
-import "./Register.css";
+import "./register.css";
 
 export default function Register() {
     function handleRegister(email, password, name) {

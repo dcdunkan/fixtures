@@ -1,6 +1,6 @@
 import LoginForm from "@/components/LoginForm";
 import React from "react";
-import "./Login.css";
+import "./login.css";
 
 export default function Login() {
     function handleLogin(email, password) {
