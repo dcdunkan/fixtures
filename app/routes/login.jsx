@@ -1,16 +1,15 @@
-import React from "react";
 import LoginForm from "@/components/LoginForm";
+import React from "react";
 import "./Login.css";
 
 export default function Login() {
-  function handleLogin(email, password) {
-    
-    alert(`Logging in: ${email}`);
-  }
+    function handleLogin(email, password) {
+        alert(`Logging in: ${email}`);
+    }
 
-  return (
-    <div className="login-container">
-      <LoginForm onLogin={handleLogin} />
-    </div>
-  );
+    return (
+        <div className="login-container">
+            <LoginForm onLogin={handleLogin} />
+        </div>
+    );
 }
