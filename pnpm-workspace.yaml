@@ -1,4 +1,4 @@
 onlyBuiltDependencies:
-  - '@tailwindcss/oxide'
-  - dprint
-  - esbuild
+    - "@tailwindcss/oxide"
+    - dprint
+    - esbuild

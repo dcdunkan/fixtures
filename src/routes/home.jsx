@@ -1,14 +1,6 @@
-// app/routes/home.jsx
 import React, { useState } from "react";
 
-export function meta() {
-    return [
-        { title: "Tourney" },
-        { name: "description", content: "Track, manage, and compete in tournaments" },
-    ];
-}
-
-export default function TournamentHome() {
+export default function Home() {
     const [query, setQuery] = useState("");
     const [tournaments, setTournaments] = useState([
         {
