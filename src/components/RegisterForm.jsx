@@ -21,18 +21,18 @@ export default function RegisterForm({ onRegister }) {
         return errs;
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         const errs = validate();
         setErrors(errs);
         if (Object.keys(errs).length === 0) {
-            onRegister(email, password, name);
+            await onRegister(email, password, name);
         }
     }
 
     return (
         <form onSubmit={handleSubmit} className="registerform-box">
-            <h2 className="registerform-title">Sign Up</h2>
+            <h2 className="registerform-title">Register</h2>
             <div className="title-underline" />
 
             <div className="input-with-icon">

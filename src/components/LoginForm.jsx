@@ -18,18 +18,18 @@ export default function LoginForm({ onLogin }) {
         return errs;
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         const errs = validate();
         setErrors(errs);
         if (Object.keys(errs).length === 0) {
-            onLogin(email, password);
+            await onLogin(email, password);
         }
     }
 
     return (
         <form onSubmit={handleSubmit} className="loginform-box">
-            <h2 className="loginform-title">Sign In</h2>
+            <h2 className="loginform-title">Login</h2>
             <div className="title-underline" />
 
             <div className="input-with-icon">

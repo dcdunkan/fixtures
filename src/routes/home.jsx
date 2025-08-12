@@ -1,6 +1,16 @@
-import React, { useState } from "react";
+import { useAuth } from "@/components/AuthProvider";
+import { PlusIcon } from "lucide-react";
+import { UserIcon } from "lucide-react";
+import { LogOutIcon } from "lucide-react";
+import { RadioIcon } from "lucide-react";
+import { SettingsIcon } from "lucide-react";
+import { TrophyIcon } from "lucide-react";
+import { HouseIcon } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 export default function Home() {
+    const { data, api } = useAuth();
+
     const [query, setQuery] = useState("");
     const [tournaments, setTournaments] = useState([
         {
@@ -48,36 +58,43 @@ export default function Home() {
         <div className="flex min-h-screen">
             {/* Sidebar */}
             <aside className="bg-sidebar text-sidebar-foreground w-64 p-4 flex flex-col">
-                <div className="text-xl font-bold mb-6">🏆 Tournament Tracker</div>
+                <div className="text-xl font-bold mb-6">Fixtures</div>
                 <nav className="flex flex-col gap-2 flex-1">
-                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded">
-                        🏠 Home
+                    <a href="/" className="hover:bg-sidebar-accent p-2 rounded flex gap-2 place-items-center">
+                        <HouseIcon className="size-5" /> Home
                     </a>
-                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded">
-                        🏆 Tournaments
+                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded flex gap-2 place-items-center">
+                        <TrophyIcon className="size-5" /> Tournaments
                     </a>
-                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded">
-                        ➕ Create Tournament
+                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded flex gap-2 place-items-center">
+                        <PlusIcon /> Create Tournament
                     </a>
-                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded">
-                        📡 Live Now
+                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded flex gap-2 place-items-center">
+                        <RadioIcon /> Live Now
                     </a>
-                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded">
-                        👤 Profile
+                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded flex gap-2 place-items-center">
+                        <UserIcon /> Profile
                     </a>
-                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded">
-                        ⚙ Settings
+                    <a href="#" className="hover:bg-sidebar-accent p-2 rounded flex gap-2 place-items-center">
+                        <SettingsIcon /> Settings
                     </a>
                 </nav>
-                <div className="mt-auto text-red-500 cursor-pointer">⬅ Logout</div>
+                <button
+                    className="hover:bg-sidebar-accent p-2 rounded flex gap-2 place-items-center cursor-pointer"
+                    onClick={async () => {
+                        await api.post("user/logout");
+                        window.location.href = "/login";
+                    }}
+                >
+                    <LogOutIcon /> Logout
+                </button>
             </aside>
 
             {/* Main Content */}
             <main className="flex-1 flex flex-col">
                 <header className="flex justify-end p-4 border-b border-border">
                     <div className="flex items-center gap-2">
-                        <img src="/images/avatar.png" alt="avatar" className="w-10 h-10 rounded-full" />
-                        <span>Vishnu Witch</span>
+                        <span>{data?.name}</span>
                     </div>
                 </header>
 
@@ -131,7 +148,7 @@ export default function Home() {
                                 </h3>
                                 <p className="text-sm">{t.game}</p>
                                 <div className="text-xs mt-2">
-                                    👥 {t.players} players | 📅 {t.date}
+                                    {t.players} players | {t.date}
                                 </div>
                                 <div className="flex gap-2 mt-4">
                                     <button
