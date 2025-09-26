@@ -1,12 +1,12 @@
 import LoginForm from "@/components/LoginForm";
 import React from "react";
 import "./login.css";
-import { useAuth } from "@/components/AuthProvider";
+import { useAuth } from "@/hooks/auth";
+import { ACCESS_TOKEN_LOCAL_STORAGE } from "@/lib/constants";
 import { HTTPError } from "ky";
-import { redirect } from "react-router";
 
 export default function Login() {
-    const { api, setAccessToken, setData } = useAuth();
+    const { api } = useAuth();
 
     async function handleLogin(email, password) {
         try {
@@ -16,13 +16,14 @@ export default function Login() {
                     password: password,
                 },
             }).json();
-            setAccessToken(result.accessToken);
-            setData(result.user);
+
+            window.localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE, result.accessToken);
             window.location.href = "/";
         } catch (error) {
             if (error instanceof HTTPError) {
                 const response = await error.response.json();
                 alert(response.message);
+                console.log(response);
                 return;
             }
             alert("Something went wrong");

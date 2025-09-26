@@ -1,11 +1,10 @@
+import { AuthContext } from "@/hooks/auth";
+import { ACCESS_TOKEN_LOCAL_STORAGE } from "@/lib/constants";
 import ky, { HTTPError } from "ky";
-import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
 
-const AuthContext = createContext(undefined);
-
 export function AuthProvider({ children }) {
-    const [accessToken, setAccessToken] = useState();
     const location = useLocation();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState();
@@ -18,11 +17,11 @@ export function AuthProvider({ children }) {
                 // Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            credentials: "include",
             hooks: {
                 beforeRequest: [
                     (request) => {
-                        if (accessToken) {
+                        const accessToken = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE);
+                        if (accessToken != null) {
                             request.headers.set("Authorization", `Bearer ${accessToken}`);
                         }
                     },
@@ -31,17 +30,17 @@ export function AuthProvider({ children }) {
                     async (request, options, response) => {
                         if (response.status === 401) {
                             try {
-                                const { accessToken: newToken, user } = await ky
+                                const { accessToken, user } = await ky
                                     .get(`${import.meta.env.VITE_BACKEND_URL}/user/refresh`, { credentials: "include" })
                                     .json();
-                                setAccessToken(newToken);
+
                                 setData(user);
-                                request.headers.set("Authorization", `Bearer ${newToken}`);
+
+                                localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE, accessToken);
+                                request.headers.set("Authorization", `Bearer ${accessToken}`);
                                 return ky(request);
                             } catch (err) {
-                                // if (window.location.href != "/login") {
-                                //     window.location.href = "/login";
-                                // }
+                                console.warn("should logout");
                             }
                         }
                     },
@@ -50,25 +49,29 @@ export function AuthProvider({ children }) {
         }), []);
 
     useEffect(() => {
-        (async () => {
-            try {
-                const { accessToken: newToken, user } = await ky
-                    .get(`${import.meta.env.VITE_BACKEND_URL}/user/refresh`, { credentials: "include" })
-                    .json();
-                setAccessToken(newToken);
-                setData(user);
-            } catch (err) {
-                if (err instanceof HTTPError && err.response.status === 401) {
-                    // window.location.href = "/login";
-                }
-            } finally {
-                setLoading(false);
-            }
-        })();
+        if (PUBLIC_ROUTES.includes(location.pathname)) {
+            setLoading(false);
+        } else {
+            setLoading(true);
+
+            api.get("user/me")
+                .json()
+                .then((data) => {
+                    setData(data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    console.log("should redirect to login");
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
     }, []);
 
     useEffect(() => {
         if (loading) return;
+        const accessToken = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE);
 
         if (PUBLIC_ROUTES.includes(location.pathname)) {
             if (accessToken != null) {
@@ -79,17 +82,13 @@ export function AuthProvider({ children }) {
                 window.location.href = "/login";
             }
         }
-    }, [location.pathname, accessToken, loading]);
+    }, [location.pathname, loading]);
 
     if (loading) return null; // todo: a spinner
 
     return (
-        <AuthContext.Provider value={{ accessToken, setAccessToken, api, data, setData }}>
+        <AuthContext.Provider value={{ api, data, setData }}>
             {children}
         </AuthContext.Provider>
     );
-}
-
-export function useAuth() {
-    return useContext(AuthContext);
 }

@@ -1,14 +1,14 @@
 import RegisterForm from "@/components/RegisterForm";
 import React from "react";
 import "./register.css";
-import { useAuth } from "@/components/AuthProvider";
+import { useAuth } from "@/hooks/auth";
 
 export default function Register() {
     const { api } = useAuth();
 
     async function handleRegister(email, password, name) {
         try {
-            const response = await api.post("user/register", {
+            await api.post("user/register", {
                 json: {
                     email: email,
                     username: name,

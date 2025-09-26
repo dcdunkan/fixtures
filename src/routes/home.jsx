@@ -1,4 +1,5 @@
-import { useAuth } from "@/components/AuthProvider";
+import { useAuth } from "@/hooks/auth";
+import { ACCESS_TOKEN_LOCAL_STORAGE } from "@/lib/constants";
 import { PlusIcon } from "lucide-react";
 import { UserIcon } from "lucide-react";
 import { LogOutIcon } from "lucide-react";
@@ -83,6 +84,7 @@ export default function Home() {
                     className="hover:bg-sidebar-accent p-2 rounded flex gap-2 place-items-center cursor-pointer"
                     onClick={async () => {
                         await api.post("user/logout");
+                        localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE);
                         window.location.href = "/login";
                     }}
                 >
