@@ -1,0 +1,19 @@
+@font-face {
+    font-family: "Recursive";
+    src: url("/fonts/Recursive/Recursive_VF_1.085.woff2")
+        format("woff2-variations");
+    font-weight: 300 1000;
+    font-style: normal;
+    font-display: swap;
+
+    --mono: "MONO" 0;
+    --casl: "CASL": 0;
+    --slnt: "slnt" 0;
+    --CRSV: "CRSV" 0.0;
+
+    font-variation-settings:
+        var(--mono),
+        var(--casl),
+        var(--slnt),
+        var(--CRSV);
+}

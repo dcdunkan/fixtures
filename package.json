@@ -9,15 +9,21 @@
         "fmt": "dprint fmt"
     },
     "dependencies": {
+        "@radix-ui/react-dialog": "^1.1.15",
+        "@radix-ui/react-dropdown-menu": "^2.1.16",
+        "@radix-ui/react-separator": "^1.1.7",
         "@radix-ui/react-slot": "^1.2.3",
+        "@radix-ui/react-tooltip": "^1.2.8",
         "@vitejs/plugin-react": "^5.0.0",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "ky": "^1.8.2",
         "lucide-react": "^0.536.0",
+        "next-themes": "^0.4.6",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "react-router": "^7.7.1",
+        "sonner": "^2.0.7",
         "tailwind-merge": "^3.3.1"
     },
     "devDependencies": {

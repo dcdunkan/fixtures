@@ -1,12 +1,16 @@
 import { AuthContext } from "@/hooks/auth";
 import { ACCESS_TOKEN_LOCAL_STORAGE } from "@/lib/constants";
-import ky, { HTTPError } from "ky";
+import ky from "ky";
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router";
 import { useLocation } from "react-router";
 
 export function AuthProvider({ children }) {
     const location = useLocation();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+
+    /** @type {ReturnType<typeof useState<AuthData>>} */
     const [data, setData] = useState();
 
     const PUBLIC_ROUTES = ["/login", "/register"];
@@ -49,40 +53,37 @@ export function AuthProvider({ children }) {
         }), []);
 
     useEffect(() => {
-        if (PUBLIC_ROUTES.includes(location.pathname)) {
-            setLoading(false);
-        } else {
-            setLoading(true);
-
-            api.get("user/me")
-                .json()
-                .then((data) => {
-                    setData(data);
-                })
-                .catch((error) => {
-                    console.error(error);
-                    console.log("should redirect to login");
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        }
-    }, []);
-
-    useEffect(() => {
-        if (loading) return;
         const accessToken = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE);
 
         if (PUBLIC_ROUTES.includes(location.pathname)) {
+            setLoading(false);
+
             if (accessToken != null) {
                 window.location.href = "/";
             }
         } else {
             if (accessToken == null) {
                 window.location.href = "/login";
+                console.log("kek");
+                // navigate("/", {})
+            } else {
+                setLoading(true);
+
+                api.get("user/me")
+                    .json()
+                    .then((data) => {
+                        setData(data);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        console.log("should redirect to login");
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    });
             }
         }
-    }, [location.pathname, loading]);
+    }, [location.pathname]);
 
     if (loading) return null; // todo: a spinner
 
