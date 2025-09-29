@@ -25,7 +25,7 @@ export function DashboardLayout() {
                         <SidebarTrigger className="size-10" />
                         <h1 className="font-medium">Fixtures</h1>
                     </nav>
-                    <div className="px-4 py-4">
+                    <div className="mx-auto px-8 py-8 max-w-4xl">
                         <Outlet />
                     </div>
                 </main>

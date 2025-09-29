@@ -2,12 +2,8 @@ import { AuthContext } from "@/hooks/auth";
 import { ACCESS_TOKEN_LOCAL_STORAGE } from "@/lib/constants";
 import ky from "ky";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router";
-import { useLocation } from "react-router";
 
 export function AuthProvider({ children }) {
-    const location = useLocation();
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
     /** @type {ReturnType<typeof useState<AuthData>>} */
@@ -55,7 +51,7 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         const accessToken = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE);
 
-        if (PUBLIC_ROUTES.includes(location.pathname)) {
+        if (PUBLIC_ROUTES.includes(window.location.pathname)) {
             setLoading(false);
 
             if (accessToken != null) {
@@ -83,7 +79,7 @@ export function AuthProvider({ children }) {
                     });
             }
         }
-    }, [location.pathname]);
+    }, []);
 
     if (loading) return null; // todo: a spinner
 

@@ -22,7 +22,7 @@ import { Building2Icon } from "lucide-react";
 import { LoaderCircleIcon } from "lucide-react";
 import { CircleXIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { useLocation } from "react-router";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
@@ -91,11 +91,11 @@ export function AppSidebar() {
                         <SidebarMenu>
                             {SIDEBAR_NAVIGATION_ITEMS.map((item) => (
                                 <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild isActive={location.pathname === item.url} >
-                                        <Link to={item.url}>
+                                    <SidebarMenuButton asChild isActive={location.pathname === item.url}>
+                                        <span onClick={() => navigate(item.url)}>
                                             <item.icon />
                                             <span>{item.title}</span>
-                                        </Link>
+                                        </span>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
@@ -129,9 +129,9 @@ export function AppSidebar() {
                                                         asChild
                                                         isActive={location.pathname === url}
                                                     >
-                                                        <Link to={url}>
+                                                        <NavLink to={url}>
                                                             <span>{club.name}</span>
-                                                        </Link>
+                                                        </NavLink>
                                                     </SidebarMenuButton>
                                                 </SidebarMenuItem>
                                             );
