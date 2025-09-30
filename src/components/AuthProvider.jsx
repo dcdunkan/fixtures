@@ -20,6 +20,7 @@ export function AuthProvider({ children }) {
             hooks: {
                 beforeRequest: [
                     (request) => {
+                        // todo: only do if request is to a protected route
                         const accessToken = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE);
                         if (accessToken != null) {
                             request.headers.set("Authorization", `Bearer ${accessToken}`);
@@ -60,7 +61,6 @@ export function AuthProvider({ children }) {
         } else {
             if (accessToken == null) {
                 window.location.href = "/login";
-                console.log("kek");
                 // navigate("/", {})
             } else {
                 setLoading(true);
@@ -81,7 +81,13 @@ export function AuthProvider({ children }) {
         }
     }, []);
 
-    if (loading) return null; // todo: a spinner
+    if (loading) {
+        return (
+            <div className="w-full h-screen flex items-center justify-center place-items-center">
+                Authenticating
+            </div>
+        );
+    }
 
     return (
         <AuthContext.Provider value={{ api, data, setData }}>

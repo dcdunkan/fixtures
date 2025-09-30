@@ -20,7 +20,9 @@ export {};
 
 declare global {
     interface AuthData {
+        id: string;
         name: string;
+        handle: string;
         email: string;
     }
 
@@ -28,6 +30,18 @@ declare global {
         api: KyInstance;
         data: AuthData;
         setData: React.Dispatch<React.SetStateAction<AuthData>>;
+    }
+
+    interface GlobalStateContext {
+        clubs: LoadedData<Tourney.MyClubMembership[]>;
+        setClubs: React.Dispatch<React.SetStateAction<LoadedData<Tourney.MyClubMembership[]>>>;
+    }
+
+    interface ClubContext {
+        club: LoadedResolved<Tourney.MyClub>;
+        setClub: React.Dispatch<React.SetStateAction<LoadedResolved<Tourney.MyClub>>>;
+        clubMembers: LoadedData<Tourney.ClubMember[]>;
+        setClubMembers: React.Dispatch<React.SetStateAction<LoadedData<Tourney.ClubMember[]>>>;
     }
 
     type LoadedPending = {
@@ -47,13 +61,40 @@ declare global {
         | LoadedResolved<T>
         | LoadedRejected;
 
+    // app specific
     namespace Tourney {
         interface MongoObject {
             _id: string;
         }
 
+        interface User extends MongoObject {
+            name: string;
+            handle: string;
+            email: string;
+        }
+
+        type ClubMemberRole = "owner" | "admin" | "member";
+
+        interface ClubMembership extends MongoObject {
+            joined_at: string;
+            role: ClubMemberRole;
+        }
+
+        interface MyClubMembership extends ClubMembership {
+            club: Tourney.Club;
+        }
+
         interface Club extends MongoObject {
             name: string;
+            handle: string;
+        }
+
+        interface MyClub extends Club {
+            membership: ClubMembership;
+        }
+
+        interface ClubMember extends ClubMembership {
+            user: Tourney.User;
         }
     }
 }

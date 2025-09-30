@@ -5,6 +5,7 @@ import { Link } from "react-router";
 export default function RegisterForm({ onRegister }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [handle, setHandle] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
@@ -14,6 +15,7 @@ export default function RegisterForm({ onRegister }) {
         if (!name) errs.name = "Name is required.";
         if (!email) errs.email = "Email is required.";
         else if (!/\S+@\S+\.\S+/.test(email)) errs.email = "Email is invalid.";
+        if (!handle) errs.handle = "Handle is required."; // todo: validate
         if (!password) errs.password = "Password is required.";
         else if (password.length < 6) errs.password = "Password must be at least 6 characters.";
         if (!confirmPassword) errs.confirmPassword = "Please confirm your password.";
@@ -26,7 +28,7 @@ export default function RegisterForm({ onRegister }) {
         const errs = validate();
         setErrors(errs);
         if (Object.keys(errs).length === 0) {
-            await onRegister(email, password, name);
+            await onRegister({ email, password, name, handle });
         }
     }
 
@@ -56,6 +58,17 @@ export default function RegisterForm({ onRegister }) {
                 />
             </div>
             {errors.email && <p className="error-text">{errors.email}</p>}
+
+            <div className="input-with-icon">
+                <input
+                    type="text"
+                    placeholder="User handle (e.g., user123)"
+                    value={handle}
+                    onChange={e => setHandle(e.target.value)}
+                    className="register-input"
+                />
+            </div>
+            {errors.handle && <p className="error-text">{errors.handle}</p>}
 
             <div className="input-with-icon">
                 <input

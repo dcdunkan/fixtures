@@ -21,6 +21,7 @@ import { TrophyIcon } from "lucide-react";
 import { Building2Icon } from "lucide-react";
 import { LoaderCircleIcon } from "lucide-react";
 import { CircleXIcon } from "lucide-react";
+import { UsersIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import { useLocation } from "react-router";
@@ -36,6 +37,11 @@ const SIDEBAR_NAVIGATION_ITEMS = [
         title: "Clubs",
         url: "/clubs",
         icon: Building2Icon,
+    },
+    {
+        title: "Teams",
+        url: "/teams",
+        icon: UsersIcon,
     },
     {
         title: "Tournaments",
@@ -54,24 +60,24 @@ export function AppSidebar() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const [clubs, setClubs] = useState(
-        /** @type {LoadedData<Tourney.Club[]>} */ ({
+    const [clubMemberships, setClubMemberships] = useState(
+        /** @type {LoadedData<Tourney.MyClubMembership[]>} */ ({
             state: "pending",
             message: "Retrieving clubs",
         }),
     );
 
     useEffect(() => {
-        api.get("clubs").json()
-            .then((clubs) => {
-                setClubs({
+        /** @type {Promise<Tourney.MyClubMembership[]>}*/ (api.get("clubs").json())
+            .then((clubMemberships) => {
+                setClubMemberships({
                     state: "resolved",
-                    data: clubs,
+                    data: clubMemberships,
                 });
             })
             .catch((error) => {
                 console.error(error);
-                setClubs({
+                setClubMemberships({
                     state: "rejected",
                     message: "Unable to retrieve clubs",
                 });
@@ -91,7 +97,11 @@ export function AppSidebar() {
                         <SidebarMenu>
                             {SIDEBAR_NAVIGATION_ITEMS.map((item) => (
                                 <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild isActive={location.pathname === item.url}>
+                                    <SidebarMenuButton
+                                        asChild
+                                        isActive={location.pathname === item.url}
+                                        className="cursor-default"
+                                    >
                                         <span onClick={() => navigate(item.url)}>
                                             <item.icon />
                                             <span>{item.title}</span>
@@ -106,14 +116,14 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupLabel>My Clubs</SidebarGroupLabel>
                     <SidebarGroupContent>
-                        {clubs.state === "pending"
+                        {clubMemberships.state === "pending"
                             ? (
                                 <div className="text-xs text-muted-foreground p-2 inline-flex gap-2">
-                                    <LoaderCircleIcon className="animate-spin size-4" /> {clubs.message}
+                                    <LoaderCircleIcon className="animate-spin size-4" /> {clubMemberships.message}
                                 </div>
                             )
-                            : clubs.state === "resolved"
-                            ? clubs.data.length === 0
+                            : clubMemberships.state === "resolved"
+                            ? clubMemberships.data.length === 0
                                 ? (
                                     <div className="text-xs text-muted-foreground p-2 ">
                                         You are not part of a club.
@@ -121,17 +131,18 @@ export function AppSidebar() {
                                 )
                                 : (
                                     <SidebarMenu>
-                                        {clubs.data.map((club) => {
-                                            const url = `/clubs/${club._id}`; // todo: add an small identifier
+                                        {clubMemberships.data.map((membership) => {
+                                            const url = `/clubs/${membership.club._id}`;
                                             return (
-                                                <SidebarMenuItem key={club._id}>
+                                                <SidebarMenuItem key={membership.club._id}>
                                                     <SidebarMenuButton
                                                         asChild
                                                         isActive={location.pathname === url}
+                                                        className="cursor-default"
                                                     >
-                                                        <NavLink to={url}>
-                                                            <span>{club.name}</span>
-                                                        </NavLink>
+                                                        <span onClick={() => navigate(url)}>
+                                                            {membership.club.name}
+                                                        </span>
                                                     </SidebarMenuButton>
                                                 </SidebarMenuItem>
                                             );
@@ -140,7 +151,7 @@ export function AppSidebar() {
                                 )
                             : (
                                 <div className="text-xs text-destructive p-2 inline-flex gap-2">
-                                    <CircleXIcon className="size-4" /> {clubs.message}
+                                    <CircleXIcon className="size-4" /> {clubMemberships.message}
                                 </div>
                             )}
                     </SidebarGroupContent>

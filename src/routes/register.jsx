@@ -6,13 +6,14 @@ import { useAuth } from "@/hooks/auth";
 export default function Register() {
     const { api } = useAuth();
 
-    async function handleRegister(email, password, name) {
+    async function handleRegister({ email, password, name, handle }) {
         try {
             await api.post("user/register", {
                 json: {
+                    name: name,
                     email: email,
-                    username: name,
                     password: password,
+                    handle: handle,
                 },
             }).json();
             window.location.href = "/login";
