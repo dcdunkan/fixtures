@@ -73,6 +73,8 @@ export function AuthProvider({ children }) {
                     .catch((error) => {
                         console.error(error);
                         console.log("should redirect to login");
+                        localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE);
+                        window.location.href = "/login";
                     })
                     .finally(() => {
                         setLoading(false);

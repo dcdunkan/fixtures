@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/auth";
 import { HTTPError } from "ky";
 import { CircleXIcon } from "lucide-react";
 import { LoaderIcon } from "lucide-react";
+import { GlobeIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { toast } from "sonner";
@@ -10,7 +11,7 @@ import { ClubContext } from "./club-context";
 import DeleteClubDialog from "./DeleteClubDialog";
 import MembersSection from "./MembersSection";
 
-export default function ClubHome() {
+export default function ClubPage() {
     /** @type {ReturnType<typeof useParams<"clubId">>} */
     const params = useParams();
 
@@ -31,6 +32,11 @@ export default function ClubHome() {
     );
 
     useEffect(() => {
+        setClub({
+            state: "pending",
+            message: "Fetching club info",
+        });
+
         api.get(`club/${params.clubId}`).json()
             .then((club) => {
                 setClub({
@@ -48,7 +54,7 @@ export default function ClubHome() {
                     message: "Failed to get club info",
                 });
             });
-    }, []);
+    }, [params.clubId]);
 
     if (club.state === "pending") {
         return (
@@ -73,16 +79,23 @@ export default function ClubHome() {
                 setClubMembers: setClubMembers,
             }}
         >
+            <title>{`@${club.data.handle} \u2027 Fixtures`}</title>
             <div className="space-y-8">
-                <div className="">
-                    <h2 className="font-semibold text-2xl">{club.data.name}</h2>
-                    <div className="text-muted-foreground">@{club.data.handle}</div>
+                <div className="flex justify-between place-items-center gap-2">
+                    <div className="">
+                        <h2 className="font-semibold text-2xl">{club.data.name}</h2>
+                        <div className="text-muted-foreground">@{club.data.handle}</div>
+                    </div>
+                    <Button variant="outline" size="icon">
+                        <GlobeIcon />
+                        {/* todo: link to public profile */}
+                    </Button>
                 </div>
 
                 <div className="space-y-4">
                     <h3 className="font-medium text-xl">Tournaments</h3>
 
-                    <p className="text-muted-foreground">Your club never hosted a tournament before!</p>
+                    <p className="text-muted-foreground">Your club never organized a tournament before!</p>
                 </div>
 
                 {(club.data.membership.role === "admin" || club.data.membership.role === "owner") && <MembersSection />}

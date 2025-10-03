@@ -1,5 +1,3 @@
-import { Home, Settings } from "lucide-react";
-
 import {
     Sidebar,
     SidebarContent,
@@ -14,44 +12,45 @@ import {
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/auth";
 import { ACCESS_TOKEN_LOCAL_STORAGE } from "@/lib/constants";
-import { ChevronUpIcon } from "lucide-react";
-import { LogOutIcon } from "lucide-react";
-import { UserCircleIcon } from "lucide-react";
-import { TrophyIcon } from "lucide-react";
-import { Building2Icon } from "lucide-react";
-import { LoaderCircleIcon } from "lucide-react";
-import { CircleXIcon } from "lucide-react";
-import { UsersIcon } from "lucide-react";
+import Avvvatars from "avvvatars-react";
+import {
+    Building2Icon,
+    ChevronUpIcon,
+    CircleXIcon,
+    HomeIcon,
+    LoaderCircleIcon,
+    LogOutIcon,
+    SettingsIcon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
 const SIDEBAR_NAVIGATION_ITEMS = [
     {
         title: "Home",
         url: "/",
-        icon: Home,
+        icon: HomeIcon,
     },
     {
         title: "Clubs",
         url: "/clubs",
         icon: Building2Icon,
     },
-    {
-        title: "Teams",
-        url: "/teams",
-        icon: UsersIcon,
-    },
-    {
-        title: "Tournaments",
-        url: "/tournaments",
-        icon: TrophyIcon,
-    },
+    // {
+    //     title: "Teams",
+    //     url: "/teams",
+    //     icon: UsersIcon,
+    // },
+    // {
+    //     title: "Tournaments",
+    //     url: "/tournaments",
+    //     icon: TrophyIcon,
+    // },
     {
         title: "Settings",
         url: "/settings",
-        icon: Settings,
+        icon: SettingsIcon,
     },
 ];
 
@@ -165,7 +164,7 @@ export function AppSidebar() {
                             <DropdownMenuTrigger asChild>
                                 <SidebarMenuButton asChild size="lg">
                                     <span>
-                                        <UserCircleIcon />
+                                        <Avvvatars style="shape" value={data.email} />
                                         <div className="ml-2">
                                             <div>{data.name}</div>
                                             <div className="text-muted-foreground text-xs">{data.email}</div>

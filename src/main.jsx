@@ -1,7 +1,7 @@
 import "./index.css";
 
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "./components/AuthProvider";
@@ -9,25 +9,53 @@ import { Toaster } from "./components/ui/sonner";
 
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 
-import Clubs from "@/routes/clubs";
-import ClubHome from "@/routes/clubs/[clubId]";
-import Home from "@/routes/home";
-import Login from "@/routes/login";
-import Register from "@/routes/register";
+import ClubsPage from "./routes/clubs";
+import ClubPage from "./routes/clubs/[clubId]";
+import SettingsPage from "./routes/clubs/settings";
+import HomePage from "./routes/home";
+import LoginPage from "./routes/login";
+import RegisterPage from "./routes/register";
 
-const router = createBrowserRouter(
-    createRoutesFromElements(
-        <Route>
-            <Route path="register" element={<Register />} />
-            <Route path="login" element={<Login />} />
-            <Route path="/" element={<DashboardLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/clubs" element={<Clubs />} />
-                <Route path="/clubs/:clubId" element={<ClubHome />} />
-            </Route>
-        </Route>,
-    ),
-);
+const router = createBrowserRouter([
+    {
+        path: "/login",
+        Component: LoginPage,
+    },
+    {
+        path: "/register",
+        Component: RegisterPage,
+    },
+    {
+        path: "/",
+        Component: DashboardLayout,
+        children: [
+            {
+                index: true,
+                Component: HomePage,
+            },
+            {
+                path: "clubs",
+                children: [
+                    {
+                        index: true,
+                        Component: ClubsPage,
+                    },
+                    {
+                        path: ":clubId",
+                        Component: ClubPage,
+                        loader: async function(p) {
+                            // todo: make use of loaders
+                        },
+                    },
+                ],
+            },
+            {
+                path: "settings",
+                Component: SettingsPage,
+            },
+        ],
+    },
+]);
 
 const root = document.getElementById("root");
 

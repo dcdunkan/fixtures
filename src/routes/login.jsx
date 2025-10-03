@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/auth";
 import { ACCESS_TOKEN_LOCAL_STORAGE } from "@/lib/constants";
 import { HTTPError } from "ky";
 
-export default function Login() {
+export default function LoginPage() {
     const { api } = useAuth();
 
     async function handleLogin(email, password) {
@@ -32,6 +32,8 @@ export default function Login() {
 
     return (
         <div className="login-container">
+            <title>Login &middot; Fixtures</title>
+
             <LoginForm onLogin={handleLogin} />
         </div>
     );

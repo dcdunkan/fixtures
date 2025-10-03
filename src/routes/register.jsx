@@ -3,7 +3,7 @@ import React from "react";
 import "./register.css";
 import { useAuth } from "@/hooks/auth";
 
-export default function Register() {
+export default function RegisterPage() {
     const { api } = useAuth();
 
     async function handleRegister({ email, password, name, handle }) {
@@ -29,6 +29,8 @@ export default function Register() {
 
     return (
         <div className="register-container">
+            <title>Register &middot; Fixtures</title>
+
             <RegisterForm onRegister={handleRegister} />
         </div>
     );

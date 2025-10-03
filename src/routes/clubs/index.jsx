@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import ClubsList from "./ClubsList";
 import CreateClubDialog from "./CreateClubDialog";
 
-export default function Clubs() {
+export default function ClubsPage() {
     const { api } = useAuth();
     const { clubs, setClubs } = useGlobalState();
 
@@ -28,13 +28,13 @@ export default function Clubs() {
     }, []);
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
+            <title>Your clubs &middot; Fixtures</title>
+
             <div className="space-y-4">
                 <div className="flex place-items-center justify-between">
                     <h2 className="font-bold text-2xl">Your Clubs</h2>
-                    <div>
-                        <CreateClubDialog />
-                    </div>
+                    <CreateClubDialog />
                 </div>
 
                 <div>
