@@ -61,17 +61,17 @@ function ThemeToggle() {
         system: LaptopMinimalIcon,
     };
 
-    const [Icon, setIcon] = useState(icons[theme || "system"]);
+    const [ThemeIcon, setThemeIcon] = useState(icons[theme || "system"]);
 
     useEffect(() => {
-        setIcon(icons[theme]);
+        setThemeIcon(icons[theme]);
     }, [theme]);
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
-                    <Icon />
+                    <ThemeIcon />
                     <span className="capitalize">{theme}</span>
                 </Button>
             </DropdownMenuTrigger>

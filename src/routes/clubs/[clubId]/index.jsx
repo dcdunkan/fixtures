@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { ClubContext } from "./club-context";
 import DeleteClubDialog from "./DeleteClubDialog";
 import MembersSection from "./MembersSection";
+import TournamentsSection from "./TournamentsSection";
 
 export default function ClubPage() {
     /** @type {ReturnType<typeof useParams<"clubId">>} */
@@ -28,6 +29,13 @@ export default function ClubPage() {
         /**@type {LoadedData<Tourney.ClubMember[]>} */ ({
             state: "pending",
             message: "Fetching club members",
+        }),
+    );
+
+    const [tournaments, setTournaments] = useState(
+        /**@type {LoadedData<Tourney.Tournament[]>} */ ({
+            state: "pending",
+            message: "Fetching tournaments",
         }),
     );
 
@@ -75,8 +83,12 @@ export default function ClubPage() {
             value={{
                 club: club,
                 setClub: setClub,
+
                 clubMembers: clubMembers,
                 setClubMembers: setClubMembers,
+
+                tournaments: tournaments,
+                setTournaments: setTournaments,
             }}
         >
             <title>{`@${club.data.handle} \u2027 Fixtures`}</title>
@@ -92,11 +104,7 @@ export default function ClubPage() {
                     </Button>
                 </div>
 
-                <div className="space-y-4">
-                    <h3 className="font-medium text-xl">Tournaments</h3>
-
-                    <p className="text-muted-foreground">Your club never organized a tournament before!</p>
-                </div>
+                <TournamentsSection />
 
                 {(club.data.membership.role === "admin" || club.data.membership.role === "owner") && <MembersSection />}
 

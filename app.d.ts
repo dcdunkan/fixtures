@@ -28,7 +28,7 @@ declare global {
 
     interface AuthContext {
         api: KyInstance;
-        data: AuthData;
+        data: AuthData; // todo: rename to auth info
         setData: React.Dispatch<React.SetStateAction<AuthData>>;
     }
 
@@ -40,8 +40,12 @@ declare global {
     interface ClubContext {
         club: LoadedResolved<Tourney.MyClub>;
         setClub: React.Dispatch<React.SetStateAction<LoadedResolved<Tourney.MyClub>>>;
+
         clubMembers: LoadedData<Tourney.ClubMember[]>;
         setClubMembers: React.Dispatch<React.SetStateAction<LoadedData<Tourney.ClubMember[]>>>;
+
+        tournaments: LoadedData<Tourney.Tournament[]>;
+        setTournaments: React.Dispatch<React.SetStateAction<LoadedData<Tourney.Tournament[]>>>;
     }
 
     type LoadedPending = {
@@ -95,6 +99,24 @@ declare global {
 
         interface ClubMember extends ClubMembership {
             user: Tourney.User;
+        }
+
+        interface TournamentSettings {
+            rankingConfig: {
+                winPoints: number;
+                drawPoints: number;
+                lossPoints: number;
+                addScorePoints: boolean;
+            };
+        }
+
+        interface Tournament extends MongoObject {
+            name: string;
+            clubId: string;
+            createdAt: string;
+            startTime?: string;
+            endTime?: string;
+            settings: TournamentSettings;
         }
     }
 }

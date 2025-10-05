@@ -67,7 +67,7 @@ export function AppSidebar() {
     );
 
     useEffect(() => {
-        /** @type {Promise<Tourney.MyClubMembership[]>}*/ (api.get("clubs").json())
+        /** @type {Promise<Tourney.MyClubMembership[]>}*/ (api.get("user/clubs").json())
             .then((clubMemberships) => {
                 setClubMemberships({
                     state: "resolved",

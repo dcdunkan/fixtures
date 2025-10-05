@@ -13,8 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/hooks/auth";
 import { HTTPError } from "ky";
-import { UserPlusIcon } from "lucide-react";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, UserPlusIcon } from "lucide-react";
 import { useContext, useState } from "react";
 import { toast } from "sonner";
 import { ClubContext } from "./club-context";
@@ -50,7 +49,7 @@ export default function AddMemberDialog() {
 
         setIsAdding(true);
 
-        api.post(`club/${club.data._id}/add-member`, {
+        api.post(`club/${club.data._id}/member`, {
             json: {
                 query: userHandle,
                 role: inviteUserRole,

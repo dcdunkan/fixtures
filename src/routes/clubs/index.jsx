@@ -11,7 +11,7 @@ export default function ClubsPage() {
     const { clubs, setClubs } = useGlobalState();
 
     useEffect(() => {
-        api.get("clubs").json()
+        api.get("user/clubs").json()
             .then((clubs) => {
                 setClubs({
                     state: "resolved",
