@@ -1,6 +1,6 @@
 import { AuthContext } from "@/hooks/auth";
 import { ACCESS_TOKEN_LOCAL_STORAGE } from "@/lib/constants";
-import ky from "ky";
+import ky, { HTTPError } from "ky";
 import { useEffect, useMemo, useState } from "react";
 
 export function AuthProvider({ children }) {
@@ -30,19 +30,15 @@ export function AuthProvider({ children }) {
                 afterResponse: [
                     async (request, options, response) => {
                         if (response.status === 401) {
-                            try {
-                                const { accessToken, user } = await ky
-                                    .get(`${import.meta.env.VITE_BACKEND_URL}/user/refresh`, { credentials: "include" })
-                                    .json();
+                            const { accessToken, user } = await ky
+                                .get(`${import.meta.env.VITE_BACKEND_URL}/user/refresh`, { credentials: "include" })
+                                .json();
 
-                                setData(user);
+                            setData(user);
 
-                                localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE, accessToken);
-                                request.headers.set("Authorization", `Bearer ${accessToken}`);
-                                return ky(request);
-                            } catch (err) {
-                                console.warn("should logout");
-                            }
+                            localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE, accessToken);
+                            request.headers.set("Authorization", `Bearer ${accessToken}`);
+                            return ky(request, options);
                         }
                     },
                 ],
@@ -72,9 +68,11 @@ export function AuthProvider({ children }) {
                     })
                     .catch((error) => {
                         console.error(error);
-                        console.log("should redirect to login");
-                        localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE);
-                        window.location.href = "/login";
+                        if (error instanceof HTTPError && error.response.status === 401) {
+                            console.log("should redirect to login");
+                            localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE);
+                            window.location.href = "/login";
+                        }
                     })
                     .finally(() => {
                         setLoading(false);
