@@ -13,7 +13,7 @@ import MembersSection from "./MembersSection";
 import TournamentsSection from "./TournamentsSection";
 
 export default function ClubPage() {
-    /** @type {ReturnType<typeof useParams<"clubId">>} */
+    /** @type {Readonly<import("react-router").Params<"clubId">>} */
     const params = useParams();
 
     const { api } = useAuth();

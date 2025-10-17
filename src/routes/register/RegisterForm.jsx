@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import "./RegisterForm.css";
+import { useState } from "react";
 import { Link } from "react-router";
+import "./RegisterForm.css";
 
 export default function RegisterForm({ onRegister }) {
     const [name, setName] = useState("");

@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="react-router" />
 
 import { KyInstance } from "ky";
 
@@ -46,6 +47,11 @@ declare global {
 
         tournaments: LoadedData<Tourney.Tournament[]>;
         setTournaments: React.Dispatch<React.SetStateAction<LoadedData<Tourney.Tournament[]>>>;
+    }
+
+    interface TournamentContext {
+        tournament: LoadedResolved<Tourney.Tournament>;
+        setTournament: React.Dispatch<React.SetStateAction<LoadedResolved<Tourney.Tournament>>>;
     }
 
     type LoadedPending = {

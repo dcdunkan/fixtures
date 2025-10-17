@@ -1,9 +1,8 @@
-import LoginForm from "@/components/LoginForm";
-import React from "react";
-import "./login.css";
 import { useAuth } from "@/hooks/auth";
 import { ACCESS_TOKEN_LOCAL_STORAGE } from "@/lib/constants";
 import { HTTPError } from "ky";
+import LoginForm from "./LoginForm";
+import "./login.css";
 
 export default function LoginPage() {
     const { api } = useAuth();

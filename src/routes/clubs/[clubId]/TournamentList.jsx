@@ -120,6 +120,7 @@ function GroupedTournamentList({ status, tournaments }) {
  * @returns {TournamentStatus}
  */
 function inferStatusFromTime(startTime, endTime) {
+    // todo: what about "ends today"
     return startTime != null
         ? isFuture(startTime)
             ? "upcoming"

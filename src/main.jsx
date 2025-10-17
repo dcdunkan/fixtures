@@ -11,10 +11,12 @@ import { DashboardLayout } from "@/layouts/DashboardLayout";
 
 import ClubsPage from "./routes/clubs";
 import ClubPage from "./routes/clubs/[clubId]";
-import SettingsPage from "./routes/clubs/settings";
 import HomePage from "./routes/home";
 import LoginPage from "./routes/login";
 import RegisterPage from "./routes/register";
+import SettingsPage from "./routes/settings";
+import TournamentsPage from "./routes/tournaments";
+import TournamentPage from "./routes/tournaments/[tournamentId]";
 
 const router = createBrowserRouter([
     {
@@ -46,6 +48,19 @@ const router = createBrowserRouter([
                         loader: async function(p) {
                             // todo: make use of loaders
                         },
+                    },
+                ],
+            },
+            {
+                path: "tournaments",
+                children: [
+                    {
+                        index: true,
+                        Component: TournamentsPage,
+                    },
+                    {
+                        path: ":tournamentId",
+                        Component: TournamentPage,
                     },
                 ],
             },

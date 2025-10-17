@@ -1,7 +1,6 @@
-import RegisterForm from "@/components/RegisterForm";
-import React from "react";
-import "./register.css";
 import { useAuth } from "@/hooks/auth";
+import RegisterForm from "./RegisterForm";
+import "./register.css";
 
 export default function RegisterPage() {
     const { api } = useAuth();

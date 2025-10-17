@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/auth";
 
 export default function HomePage() {

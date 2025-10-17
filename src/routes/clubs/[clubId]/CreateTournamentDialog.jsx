@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { HTTPError } from "ky";
-import { CalendarIcon, LoaderIcon, MinusIcon, PlusIcon } from "lucide-react";
+import { CalendarIcon, LoaderIcon, MinusIcon, NotebookPenIcon, PlusIcon } from "lucide-react";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -139,7 +139,7 @@ export default function CreateTournamentDialog() {
         >
             <DialogTrigger asChild>
                 <Button>
-                    <PlusIcon /> Create
+                    <NotebookPenIcon /> Create
                 </Button>
             </DialogTrigger>
 
@@ -232,31 +232,7 @@ export default function CreateTournamentDialog() {
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col w-full space-y-1 place-items-start">
                                             <FormLabel>Win points</FormLabel>
-
-                                            <div className="flex place-items-center justify-evenly gap-3">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    disabled={field.value <= 0}
-                                                    onClick={() => {
-                                                        if (field.value > 0) {
-                                                            field.onChange(field.value - 1);
-                                                        }
-                                                    }}
-                                                >
-                                                    <MinusIcon />
-                                                </Button>
-                                                <span>{field.value}</span>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() => {
-                                                        field.onChange(field.value + 1);
-                                                    }}
-                                                >
-                                                    <PlusIcon />
-                                                </Button>
-                                            </div>
+                                            <CounterFormField field={field} />
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -267,31 +243,7 @@ export default function CreateTournamentDialog() {
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col w-full space-y-1 place-items-start">
                                             <FormLabel>Draw points</FormLabel>
-
-                                            <div className="flex place-items-center justify-evenly gap-3">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    disabled={field.value <= 0}
-                                                    onClick={() => {
-                                                        if (field.value > 0) {
-                                                            field.onChange(field.value - 1);
-                                                        }
-                                                    }}
-                                                >
-                                                    <MinusIcon />
-                                                </Button>
-                                                <span>{field.value}</span>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() => {
-                                                        field.onChange(field.value + 1);
-                                                    }}
-                                                >
-                                                    <PlusIcon />
-                                                </Button>
-                                            </div>
+                                            <CounterFormField field={field} />
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -302,31 +254,7 @@ export default function CreateTournamentDialog() {
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col w-full space-y-1 place-items-start">
                                             <FormLabel>Loss points</FormLabel>
-
-                                            <div className="flex place-items-center justify-evenly gap-3">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    disabled={field.value <= 0}
-                                                    onClick={() => {
-                                                        if (field.value > 0) {
-                                                            field.onChange(field.value - 1);
-                                                        }
-                                                    }}
-                                                >
-                                                    <MinusIcon />
-                                                </Button>
-                                                <span>{field.value}</span>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() => {
-                                                        field.onChange(field.value + 1);
-                                                    }}
-                                                >
-                                                    <PlusIcon />
-                                                </Button>
-                                            </div>
+                                            <CounterFormField field={field} />
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -382,5 +310,34 @@ export default function CreateTournamentDialog() {
     );
 }
 
-function CounterFormField() {
+/**
+ * @param {{field: { onChange: (value: number) => void; value: number } }} param0
+ */
+function CounterFormField({ field }) {
+    return (
+        <div className="flex place-items-center justify-evenly gap-3">
+            <Button
+                variant="ghost"
+                size="icon"
+                disabled={field.value <= 0}
+                onClick={() => {
+                    if (field.value > 0) {
+                        field.onChange(field.value - 1);
+                    }
+                }}
+            >
+                <MinusIcon />
+            </Button>
+            <span>{field.value}</span>
+            <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                    field.onChange(field.value + 1);
+                }}
+            >
+                <PlusIcon />
+            </Button>
+        </div>
+    );
 }
