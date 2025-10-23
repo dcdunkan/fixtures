@@ -35,7 +35,7 @@ export default function HomePage() {
     return (
         <div className="space-y-4">
             <title>Fixtures</title>
-            <h2 className="font-semibold text-4xl">Hello, {data.name}</h2>
+            <h2 className="font-semibold text-4xl">Welcome, {data.name}!</h2>
             <div>
                 {clubs.state === "pending"
                     ? (
