@@ -187,7 +187,6 @@ function TeamsTable() {
         api.get(`tournaments/${tournament.data._id}/teams`).json()
             .then((teams) => {
                 setTeams({ state: "resolved", data: teams });
-                setSelectedTeam(teams[0]);
             })
             .catch((error) => {
                 if (error instanceof HTTPError && error.response) {
