@@ -11,50 +11,48 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAuth } from "@/hooks/auth";
 import { HTTPError } from "ky";
-import { ArrowDownIcon, ArrowUpIcon, CircleMinusIcon, CircleXIcon, LoaderIcon, MoreVerticalIcon } from "lucide-react";
+import { CircleMinusIcon, CircleXIcon, LoaderIcon, MoreVerticalIcon, PenIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { toast } from "sonner";
 import { ClubContext } from "./club-context";
 
-export default function MembersTable() {
-    const { club, clubMembers, setClubMembers } = useContext(ClubContext);
-    /** @type {ReturnType<typeof useParams<"clubId">>} */
+export default function PlayersTable() {
+    const {
+        club,
+        players,
+        setPlayers,
+    } = useContext(ClubContext);
+    /** @type {Readonly<import("react-router").Params<"clubId">>>} */
     const params = useParams();
     const { api } = useAuth();
 
     const [filterString, setFilterString] = useState("");
 
     useEffect(() => {
-        api.get(`club/${params.clubId}/members`).json()
-            .then((clubMembers) => {
-                setClubMembers({
-                    state: "resolved",
-                    data: clubMembers,
-                });
+        api.get(`club/${params.clubId}/players`).json()
+            .then((players) => {
+                setPlayers({ state: "resolved", data: players });
             })
             .catch((error) => {
                 if (error instanceof HTTPError && error.response) {
                     error.response.json()
                         .then(({ message }) => toast.error(message));
                 }
-                setClubMembers({
-                    state: "rejected",
-                    message: "Failed to get club members",
-                });
+                setPlayers({ state: "rejected", message: "Failed to get club players" });
             });
     }, [club]);
 
-    if (clubMembers.state === "pending") {
+    if (players.state === "pending") {
         return (
             <div className="flex items-center justify-center gap-2">
                 <LoaderIcon className="animate-spin size-5" />
             </div>
         );
-    } else if (clubMembers.state === "rejected") {
+    } else if (players.state === "rejected") {
         return (
             <div className="flex items-center justify-center gap-2">
-                <CircleXIcon className="size-5" /> {clubMembers.message}
+                <CircleXIcon className="size-5" /> {players.message}
             </div>
         );
     }
@@ -62,40 +60,26 @@ export default function MembersTable() {
     return (
         <>
             {/* todo: filter */}
-            <SearchInput placeholder="Find members..." query={filterString} setQuery={setFilterString} />
+            <SearchInput placeholder="Find players..." query={filterString} setQuery={setFilterString} />
             <div className="border rounded-sm">
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="text-center text-muted-foreground">#</TableHead>
+                            <TableHead className="text-center w-min max-w-min text-muted-foreground">#</TableHead>
                             <TableHead>Name</TableHead>
-                            <TableHead>Role</TableHead>
-                            <TableHead className="text-right">Joined on</TableHead>
                             <TableHead className="text-right"></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {clubMembers.data
-                            .filter((member) => member.user.name.toLowerCase().includes(filterString.toLowerCase()))
-                            .map((member, i) => (
-                                <TableRow key={`clubmember-${member._id}`}>
-                                    <TableCell className="text-center">{i + 1}</TableCell>
-                                    <TableCell>{member.user.name}</TableCell>
-                                    <TableCell className="capitalize">
-                                        {member.role}
-                                    </TableCell>
-                                    <TableHead className="text-right">
-                                        {new Date(member.joined_at)
-                                            .toLocaleDateString()}
-                                    </TableHead>
+                        {players.data
+                            .filter((player) => player.name.toLowerCase().includes(filterString.toLowerCase()))
+                            .map((player, i) => (
+                                <TableRow key={`clubplayer-${player._id}`}>
+                                    <TableCell className="text-center  w-min max-w-min">{i + 1}</TableCell>
+                                    <TableCell>{player.name}</TableCell>
+
                                     <TableCell className="text-right">
-                                        {member.role === "owner"
-                                            ? (
-                                                <Button size="icon" variant="ghost" disabled>
-                                                    <MoreVerticalIcon />
-                                                </Button>
-                                            )
-                                            : <MemberRowDropdownMenu member={member} />}
+                                        <PlayerRowDropdownMenu player={player} />
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -103,7 +87,7 @@ export default function MembersTable() {
                 </Table>
             </div>
 
-            {clubMembers.data.length === 1
+            {players.data.length === 1
                 && (
                     <p className="text-muted-foreground text-sm">
                         It's pretty lonely up here, invite someone to help you with managing tournaments!
@@ -114,10 +98,10 @@ export default function MembersTable() {
 }
 
 /**
- * @param {{ member: Tourney.ClubMember }} param0
+ * @param {{ player: Tourney.Player }} param0
  * @returns {import("react").JSX.Element}
  */
-function MemberRowDropdownMenu({ member }) {
+function PlayerRowDropdownMenu({ player }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -135,24 +119,14 @@ function MemberRowDropdownMenu({ member }) {
                         alert("todo");
                     }}
                 >
-                    {member.role === "admin"
-                        ? (
-                            <>
-                                <ArrowDownIcon /> Demote
-                            </>
-                        )
-                        : (
-                            <>
-                                <ArrowUpIcon /> Promote
-                            </>
-                        )}
+                    <PenIcon /> Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     onSelect={() => {
                         alert("todo");
                     }}
                 >
-                    <CircleMinusIcon /> Kick from club
+                    <CircleMinusIcon /> Remove
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

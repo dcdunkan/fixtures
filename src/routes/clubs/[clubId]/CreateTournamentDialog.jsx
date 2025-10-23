@@ -17,7 +17,7 @@ import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/hooks/auth";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
+import { endOfYesterday, format, isBefore } from "date-fns";
 import { HTTPError } from "ky";
 import { CalendarIcon, LoaderIcon, MinusIcon, NotebookPenIcon, PlusIcon } from "lucide-react";
 import { useContext, useState } from "react";
@@ -204,8 +204,8 @@ export default function CreateTournamentDialog() {
                                                     selected={field.value}
                                                     onSelect={field.onChange}
                                                     min={1}
-                                                    // disabled={(/** @type {Date} */ date) =>
-                                                    //     isBefore(date, endOfYesterday())}
+                                                    disabled={(/** @type {Date} */ date) =>
+                                                        isBefore(date, endOfYesterday())}
                                                 />
                                             </PopoverContent>
                                         </Popover>

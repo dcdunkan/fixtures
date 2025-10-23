@@ -1,14 +1,10 @@
 import { useAuth } from "@/hooks/auth";
+import { inferStatusFromTime } from "@/lib/helpers";
 import { format } from "date-fns/format";
-import { isFuture } from "date-fns/isFuture";
-import { isPast } from "date-fns/isPast";
-import { isToday } from "date-fns/isToday";
 import { CircleXIcon, LoaderIcon } from "lucide-react";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { ClubContext } from "./club-context";
-
-/** @typedef {"ongoing" | "upcoming" | "complete"} TournamentStatus */
 
 /** @type {Record<TournamentStatus, Tourney.Tournament>} */
 const TOURNAMENT_STATUS_LABELS = {
@@ -111,27 +107,6 @@ function GroupedTournamentList({ status, tournaments }) {
             </div>
         </div>
     );
-}
-
-/**
- * @param {Date | null} startTime
- * @param {Date | null} endTime
- *
- * @returns {TournamentStatus}
- */
-function inferStatusFromTime(startTime, endTime) {
-    // todo: what about "ends today"
-    return startTime != null
-        ? isFuture(startTime)
-            ? "upcoming"
-            : endTime == null
-            ? isToday(startTime)
-                ? "ongoing" // "starts today"
-                : "ongoing"
-            : isPast(endTime)
-            ? "complete"
-            : "ongoing"
-        : "upcoming"; // "upcoming (no date set)"
 }
 
 /**

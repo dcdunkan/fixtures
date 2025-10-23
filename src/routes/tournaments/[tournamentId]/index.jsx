@@ -1,11 +1,15 @@
+import { JSONPreview } from "@/components/JSONPreview";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/auth";
+import { inferStatusFromTime } from "@/lib/helpers";
 import { format } from "date-fns/format";
 import { HTTPError } from "ky";
 import { CircleXIcon, GlobeIcon, LoaderIcon } from "lucide-react";
+import { SettingsIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { toast } from "sonner";
+import { TeamsSection } from "./TeamsSection";
 import { TournamentContext } from "./tournament-context";
 
 export default function TournamentPage() {
@@ -18,6 +22,12 @@ export default function TournamentPage() {
         /**@type {LoadedData<Tourney.Tournament>} */ ({
             state: "pending",
             message: "Fetching tournament info",
+        }),
+    );
+    const [teams, setTeams] = useState(
+        /** @type {LoadedData<Tourney.Team[]>} */ ({
+            state: "pending",
+            message: "Fetching teams",
         }),
     );
 
@@ -65,6 +75,9 @@ export default function TournamentPage() {
             value={{
                 tournament: tournament,
                 setTournament: setTournament,
+
+                teams: teams,
+                setTeams: setTeams,
             }}
         >
             <div className="space-y-8">
@@ -74,12 +87,25 @@ export default function TournamentPage() {
                             <h2 className="font-semibold text-2xl">{tournament.data.name}</h2>
                             <div className="text-muted-foreground"></div>
                         </div>
-                        <Button variant="outline" size="icon">
-                            <GlobeIcon />
-                            {/* todo: link to public profile */}
-                        </Button>
+                        <div className="flex gap-2">
+                            <Button variant="outline" size="icon">
+                                <GlobeIcon />
+                                {/* todo: link to public profile */}
+                            </Button>
+                            <Button variant="outline" size="icon">
+                                <SettingsIcon />
+                            </Button>
+                        </div>
                     </div>
-                    <div>
+                    <div className="flex gap-2">
+                        <div>
+                            <div className="capitalize text-primary">
+                                {inferStatusFromTime(tournament.data.startTime, tournament.data.endTime)}
+                            </div>
+                        </div>
+
+                        <span>&middot;</span>
+
                         {tournament.data.startTime
                             ? (
                                 <span className="gap-x-1 flex">
@@ -91,13 +117,13 @@ export default function TournamentPage() {
                                     </span>
                                 </span>
                             )
-                            : "No date yet"}
+                            : "No date set yet"}
                     </div>
                 </div>
 
-                <div>
-                    {JSON.stringify(tournament, null, 2)}
-                </div>
+                <TeamsSection />
+
+                <JSONPreview data={tournament.data} />
             </div>
         </TournamentContext.Provider>
     );

@@ -18,7 +18,7 @@ import { useContext, useState } from "react";
 import { toast } from "sonner";
 import { ClubContext } from "./club-context";
 
-export default function AddMemberDialog() {
+export default function AddPlayerDialog() {
     const { club, clubMembers, setClubMembers } = useContext(ClubContext);
     const { api } = useAuth();
 
@@ -149,13 +149,13 @@ export default function AddMemberDialog() {
                         </Button>
                     </DialogClose>
                     <Button onClick={addUserToClub} disabled={isAdding}>
-                            {isAdding
-                                ? <LoaderIcon className="animate-spin" />
-                                : (
-                                    <span>
-                                        Add to club as <span className="lowercase">{inviteUserRole}</span>
-                                    </span>
-                                )}
+                        {isAdding
+                            ? <LoaderIcon className="animate-spin" />
+                            : (
+                                <span>
+                                    Add to club as <span className="lowercase">{inviteUserRole}</span>
+                                </span>
+                            )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

@@ -60,7 +60,12 @@ const router = createBrowserRouter([
                     },
                     {
                         path: ":tournamentId",
-                        Component: TournamentPage,
+                        children: [
+                            {
+                                index: true,
+                                Component: TournamentPage,
+                            },
+                        ],
                     },
                 ],
             },

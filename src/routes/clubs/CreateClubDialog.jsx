@@ -34,7 +34,7 @@ export default function CreateClubDialog() {
 
         setIsCreating(true);
 
-        api.post("club/create", {
+        api.post("club", {
             json: {
                 name: newClubDetails.name,
                 handle: newClubDetails.handle,
