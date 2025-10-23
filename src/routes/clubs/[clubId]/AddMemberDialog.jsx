@@ -149,13 +149,13 @@ export default function AddMemberDialog() {
                         </Button>
                     </DialogClose>
                     <Button onClick={addUserToClub} disabled={isAdding}>
-                            {isAdding
-                                ? <LoaderIcon className="animate-spin" />
-                                : (
-                                    <span>
-                                        Add to club as <span className="lowercase">{inviteUserRole}</span>
-                                    </span>
-                                )}
+                        {isAdding
+                            ? <LoaderIcon className="animate-spin" />
+                            : (
+                                <span>
+                                    Add to club as <span className="lowercase">{inviteUserRole}</span>
+                                </span>
+                            )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

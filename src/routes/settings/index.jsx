@@ -44,7 +44,7 @@ export default function SettingsPage() {
                                 will still be accessible via the handle.
                             </p>
                         </div>
-                        <Button variant="outline">Rename</Button>
+                        <Button variant="outline">Change</Button>
                     </div>
                 </div>
             </div>
