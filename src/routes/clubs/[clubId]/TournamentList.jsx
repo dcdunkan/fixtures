@@ -18,6 +18,11 @@ export default function TournamentsList() {
     const { club, tournaments, setTournaments } = useContext(ClubContext);
 
     useEffect(() => {
+        setTournaments({
+            state: "pending",
+            message: "Fetching club tournaments",
+        });
+
         api.get(`club/${club.data._id}/tournaments`).json()
             .then((tournaments) => {
                 setTournaments({

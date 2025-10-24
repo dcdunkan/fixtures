@@ -17,6 +17,8 @@ import RegisterPage from "./routes/register";
 import SettingsPage from "./routes/settings";
 import TournamentsPage from "./routes/tournaments";
 import TournamentPage from "./routes/tournaments/[tournamentId]";
+import StagePage from "./routes/tournaments/[tournamentId]/stages/[stageId]";
+import SchedulePage from "./routes/tournaments/[tournamentId]/stages/[stageId]/schedule";
 
 const router = createBrowserRouter([
     {
@@ -64,6 +66,26 @@ const router = createBrowserRouter([
                             {
                                 index: true,
                                 Component: TournamentPage,
+                            },
+                            {
+                                path: "stages",
+                                children: [
+                                    {
+                                        path: ":stageId",
+                                        children: [
+                                            { index: true, Component: StagePage },
+                                            {
+                                                path: "schedule",
+                                                // children: [
+                                                //     {
+                                                //         path: ":stageItemId",
+                                                Component: SchedulePage,
+                                                //     },
+                                                // ],
+                                            },
+                                        ],
+                                    },
+                                ],
                             },
                         ],
                     },

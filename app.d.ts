@@ -67,6 +67,8 @@ declare global {
         setTournament: React.Dispatch<React.SetStateAction<TournamentContext["tournament"]>>;
         teams: LoadedData<Tourney.Team[]>;
         setTeams: React.Dispatch<React.SetStateAction<TournamentContext["teams"]>>;
+        stages: LoadedData<Tourney.Stage>;
+        setStages: React.Dispatch<React.SetStateAction<TournamentContext["stages"]>>;
     }
 
     interface TeamContext {
@@ -74,6 +76,16 @@ declare global {
         setTeam: React.Dispatch<React.SetStateAction<TeamContext["team"]>>;
         players: LoadedData<Tourney.Player[]>;
         setPlayers: React.Dispatch<React.SetStateAction<TeamContext["players"]>>;
+    }
+
+    interface StageContext {
+        stage: LoadedResolved<Tourney.Stage>;
+        setStage: React.Dispatch<React.SetStateAction<StageContext["stage"]>>;
+        stageItems: LoadedData<(Omit<Tourney.StageItem, "inputs"> & {
+            inputs: Tourney.Team[];
+            roundsCount: number;
+        })[]>;
+        setStageItems: React.Dispatch<React.SetStateAction<StageContext["stageItems"]>>;
     }
 
     type LoadedPending = {
@@ -170,6 +182,44 @@ declare global {
         interface TeamXPlayer extends MongoObject {
             teamId: string;
             playerId: string;
+        }
+
+        type StageType = "league" | "group" | "knockout";
+
+        interface Stage extends MongoObject {
+            tournamentId: string;
+            name: string;
+            order: number;
+            type: StageType;
+        }
+
+        interface StageItem extends MongoObject {
+            stageId: string;
+            name?: string;
+            inputs: StageInput[]; // teams are assigned on stage creation
+        }
+
+        interface StageInput {
+            teamId: string;
+        }
+
+        interface Round extends MongoObject {
+            stageId: string;
+            number: number;
+        }
+
+        interface Match extends MongoObject {
+            roundId: string;
+            startTime?: Date;
+            endTime?: Date;
+            participant1?: string;
+            participant2?: string;
+            court?: string;
+            winnerId?: string;
+            score: {
+                team1Score: number;
+                team2Score: number;
+            };
         }
     }
 }

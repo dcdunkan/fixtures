@@ -9,6 +9,7 @@ import { SettingsIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { toast } from "sonner";
+import { StagesSection } from "./StagesSection";
 import { TeamsSection } from "./TeamsSection";
 import { TournamentContext } from "./tournament-context";
 
@@ -28,6 +29,12 @@ export default function TournamentPage() {
         /** @type {LoadedData<Tourney.Team[]>} */ ({
             state: "pending",
             message: "Fetching teams",
+        }),
+    );
+    const [stages, setStages] = useState(
+        /** @type {LoadedData<Tourney.Stage[]>} */ ({
+            state: "pending",
+            message: "Fetching stages",
         }),
     );
 
@@ -78,6 +85,9 @@ export default function TournamentPage() {
 
                 teams: teams,
                 setTeams: setTeams,
+
+                stages: stages,
+                setStages: setStages,
             }}
         >
             <div className="space-y-8">
@@ -120,6 +130,8 @@ export default function TournamentPage() {
                             : "No date set yet"}
                     </div>
                 </div>
+
+                <StagesSection />
 
                 <TeamsSection />
 
