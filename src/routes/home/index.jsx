@@ -17,7 +17,6 @@ export default function HomePage() {
             .get("user/tournaments")
             .json()
             .then((clubsData) => {
-                console.log(clubsData);
                 setClubs({
                     state: "resolved",
                     data: clubsData,
