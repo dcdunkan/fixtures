@@ -11,6 +11,7 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
     readonly VITE_BACKEND_URL: string;
+    readonly VITE_BASE_PATH: string;
 }
 
 interface ImportMeta {

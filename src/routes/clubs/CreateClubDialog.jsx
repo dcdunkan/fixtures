@@ -128,7 +128,8 @@ export default function CreateClubDialog() {
                             Club handle helps to uniquely identify the club. Your public tournaments will be hosted
                             under{" "}
                             <span className="font-medium text-primary">
-                                https://fixtures.in/@{newClubDetails.handle || "<handle goes here>"}/tournaments
+                                https://{window.location.origin}/@{newClubDetails.handle
+                                    || "<handle goes here>"}/tournaments
                             </span>.
                         </p>
                     </div>

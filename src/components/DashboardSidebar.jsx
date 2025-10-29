@@ -66,6 +66,8 @@ export function AppSidebar() {
         }),
     );
 
+    const basePath = import.meta.env.VITE_BASE_PATH || "";
+
     useEffect(() => {
         /** @type {Promise<Tourney.MyClubMembership[]>}*/ (api.get("user/clubs").json())
             .then((clubMemberships) => {
@@ -178,7 +180,7 @@ export function AppSidebar() {
                                     onSelect={async () => {
                                         await api.post("user/logout");
                                         localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE);
-                                        window.location.href = "/login";
+                                        window.location.href = `${basePath}/login`;
                                     }}
                                 >
                                     <LogOutIcon /> Log out

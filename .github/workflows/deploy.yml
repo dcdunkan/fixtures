@@ -47,8 +47,8 @@ jobs:
 
       - name: Build
         env:
-          BASE_PATH: "/${{ github.event.repository.name }}"
-        run: pnpm run build --base=$BASE_PATH
+          VITE_BASE_PATH: "/${{ github.event.repository.name }}"
+        run: pnpm run build --base=$VITE_BASE_PATH
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

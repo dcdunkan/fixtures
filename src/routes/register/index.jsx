@@ -5,6 +5,8 @@ import "./register.css";
 export default function RegisterPage() {
     const { api } = useAuth();
 
+    const basePath = import.meta.env.VITE_BASE_PATH || "";
+
     async function handleRegister({ email, password, name, handle }) {
         try {
             await api.post("user/register", {
@@ -15,7 +17,7 @@ export default function RegisterPage() {
                     handle: handle,
                 },
             }).json();
-            window.location.href = "/login";
+            window.location.href = `${basePath}/login`;
         } catch (error) {
             if (error instanceof HTTPError) {
                 const response = await error.response.json();

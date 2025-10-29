@@ -7,6 +7,8 @@ import "./login.css";
 export default function LoginPage() {
     const { api } = useAuth();
 
+    const basePath = import.meta.env.VITE_BASE_PATH || "";
+
     async function handleLogin(email, password) {
         try {
             const result = await api.post("user/login", {
@@ -17,7 +19,7 @@ export default function LoginPage() {
             }).json();
 
             window.localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE, result.accessToken);
-            window.location.href = "/";
+            window.location.href = `${basePath}/`;
         } catch (error) {
             if (error instanceof HTTPError) {
                 const response = await error.response.json();

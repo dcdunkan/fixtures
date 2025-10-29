@@ -9,7 +9,12 @@ export function AuthProvider({ children }) {
     /** @type {ReturnType<typeof useState<AuthData>>} */
     const [data, setData] = useState();
 
-    const PUBLIC_ROUTES = ["/login", "/register"];
+    const basePath = import.meta.env.VITE_BASE_PATH || "";
+
+    const PUBLIC_ROUTES = [
+        `${basePath}/login`,
+        `${basePath}/register`,
+    ];
     const api = useMemo(() =>
         ky.create({
             prefixUrl: import.meta.env.VITE_BACKEND_URL,
@@ -52,11 +57,11 @@ export function AuthProvider({ children }) {
             setLoading(false);
 
             if (accessToken != null) {
-                window.location.href = "/";
+                window.location.href = `${basePath}/`;
             }
         } else {
             if (accessToken == null) {
-                window.location.href = "/login";
+                window.location.href = `${basePath}/login`;
                 // navigate("/", {})
             } else {
                 setLoading(true);
@@ -71,7 +76,7 @@ export function AuthProvider({ children }) {
                         if (error instanceof HTTPError && error.response.status === 401) {
                             console.log("should redirect to login");
                             localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE);
-                            window.location.href = "/login";
+                            window.location.href = `${basePath}/login`;
                         }
                     })
                     .finally(() => {
