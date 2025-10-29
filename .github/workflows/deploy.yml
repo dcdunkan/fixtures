@@ -48,7 +48,7 @@ jobs:
       - name: Build
         env:
           VITE_BASE_PATH: "/${{ github.event.repository.name }}"
-          VITE_BACKEND_URL: ${{ env.VITE_BACKEND_URL }}
+          VITE_BACKEND_URL: "${{ env.VITE_BACKEND_URL }}"
         run: pnpm run build
 
       - name: Setup Pages

@@ -7,6 +7,8 @@ import { defineConfig } from "vite";
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), "");
 
+    console.log(env.VITE_BACKEND_URL);
+
     return {
         plugins: [react(), tailwindcss()],
         resolve: {
