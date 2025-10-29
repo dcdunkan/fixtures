@@ -14,8 +14,6 @@ export default defineConfig(({ mode }) => {
                 "@": path.resolve(__dirname, "./src"),
             },
         },
-        dev: {
-            base: env.VITE_BASE_PATH || "",
-        },
+        base: env.VITE_BASE_PATH || "",
     };
 });
