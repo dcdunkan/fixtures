@@ -135,7 +135,7 @@ export default function TournamentPage() {
 
                 <TeamsSection />
 
-                <JSONPreview data={tournament.data} />
+                {/* <JSONPreview data={tournament.data} /> */}
             </div>
         </TournamentContext.Provider>
     );

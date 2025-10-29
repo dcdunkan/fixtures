@@ -1,4 +1,3 @@
-import { JSONPreview } from "@/components/JSONPreview";
 import { Minidenticon } from "@/components/Minidenticon";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,14 +14,10 @@ import { useAuth } from "@/hooks/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { HTTPError } from "ky";
-import { MinusIcon } from "lucide-react";
-import { TableIcon } from "lucide-react";
-import { PlusIcon } from "lucide-react";
-import { CircleXIcon, LoaderIcon } from "lucide-react";
+import { CircleXIcon, LoaderIcon, MinusIcon, PlusIcon, TableIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 import z from "zod";
 
